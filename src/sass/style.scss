@@ -3,3 +3,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+button {
+    width: 100px;
+    height: 50px;
+    font-style: 20px;
+    text-align: center;
+}
+
+.active {
+    color: red;
+    font-weight: 700;
+}

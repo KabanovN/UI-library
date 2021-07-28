@@ -7,6 +7,13 @@ $.prototype.init = function(selector) {
     if (!selector) {
         return this; //если селектор не указан => пустой объект
     }
+
+    if (selector.tagName) {
+        this[0] = selector;
+        this.length = 1;
+        return this;
+    } //если селектор = тэг => объект с 1м элементом
+
     Object.assign(this, document.querySelectorAll(selector)); //добавляем элементы с селектором в this
     this.length = document.querySelectorAll(selector).length; //добавляем метод length к this
     return this;

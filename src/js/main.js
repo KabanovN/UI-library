@@ -1,3 +1,5 @@
-import './lib/lib';
+import $ from './lib/lib';
 
-$('div').toggle().toggle();
+$('button').setAttr('value', 'hey');
+console.log($('button').getAttr('value'));
+
