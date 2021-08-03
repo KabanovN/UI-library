@@ -15,12 +15,12 @@ $.prototype.init = function(selector) {
     } //если селектор = тэг => объект с 1м элементом
 
     Object.assign(this, document.querySelectorAll(selector)); //добавляем элементы с селектором в this
-    this.length = document.querySelectorAll(selector).length; //добавляем метод length к this
-    return this;
+    this.length = document.querySelectorAll(selector).length; //добавляем св-во length к this
+    return this; //в this хранятся созданные прототипы
 };
 
 // т.к. $.prototype.init возвращает объект - можно расширить методы этого объекта строкой ниже
-$.prototype.init.prototype = $.prototype; //изначально прототип init относится только к возвращенному объекту(стр.12)
+$.prototype.init.prototype = $.prototype; //изначально прототип init относится только к возвращенному объекту(стр.17)
 
 window.$ = $; //записываем ф-ю глобально
 

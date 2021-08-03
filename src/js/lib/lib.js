@@ -4,5 +4,6 @@ import './modules/display';
 import './modules/classes';
 import './modules/eventActions';
 import './modules/attributes';
+import './modules/elementMethods';
 
 export default $;

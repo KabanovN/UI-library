@@ -1,5 +1,11 @@
 import $ from './lib/lib';
 
-$('button').setAttr('value', 'hey');
-console.log($('button').getAttr('value'));
+// console.log($('div').eq(2).findElems('.some'));
+
+// console.log($('.some').closestElems('.parent'));
+
+console.log($('.more').eq(0).siblings());
+
+
+
 

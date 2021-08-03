@@ -114,13 +114,13 @@ $.prototype.init = function (selector) {
 
   Object.assign(this, document.querySelectorAll(selector)); //добавляем элементы с селектором в this
 
-  this.length = document.querySelectorAll(selector).length; //добавляем метод length к this
+  this.length = document.querySelectorAll(selector).length; //добавляем св-во length к this
 
-  return this;
+  return this; //в this хранятся созданные прототипы
 }; // т.к. $.prototype.init возвращает объект - можно расширить методы этого объекта строкой ниже
 
 
-$.prototype.init.prototype = $.prototype; //изначально прототип init относится только к возвращенному объекту(стр.12)
+$.prototype.init.prototype = $.prototype; //изначально прототип init относится только к возвращенному объекту(стр.17)
 
 window.$ = $; //записываем ф-ю глобально
 
@@ -142,7 +142,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_classes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/classes */ "./src/js/lib/modules/classes.js");
 /* harmony import */ var _modules_eventActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/eventActions */ "./src/js/lib/modules/eventActions.js");
 /* harmony import */ var _modules_attributes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/attributes */ "./src/js/lib/modules/attributes.js");
+/* harmony import */ var _modules_elementMethods__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/elementMethods */ "./src/js/lib/modules/elementMethods.js");
 // файл для объединения в библиотеку - "обогащение" функции $ методами
+
 
 
 
@@ -317,6 +319,166 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggle = function () {
 
 /***/ }),
 
+/***/ "./src/js/lib/modules/elementMethods.js":
+/*!**********************************************!*\
+  !*** ./src/js/lib/modules/elementMethods.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+ // 1.метод записи/получения содержимого элемента
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.html = function (content) {
+  for (let i = 0; i < this.length; i++) {
+    if (content) {
+      //запись, если контент передан
+      this[i].innerHTML = content;
+    } else {
+      //чтение, если контент не передан
+      return this[i].innerHTML;
+    }
+
+    console.log(this);
+    console.log(this.length);
+    console.log(Object.keys(this));
+  }
+
+  return this;
+}; // 2.метод выбора конкретного элемента (нумерация с 0) - в аргументе порядковый номер
+
+/*т.к. вдальнейшем в core.js возможно расширение св-в помимо length, а идея данного метода предполагает удаление 
+всех элементов, кроме выбранного, с указанием значения св-ва length, внутри создадим переменную objLength для 
+нахождения кол-ва элементов, подобно this.length, для использования в цикле */
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.eq = function (index) {
+  const objLength = Object.keys(this).length;
+  const swap = this[index]; //временная переменная
+
+  for (let i = 0; i < objLength; i++) {
+    delete this[i]; //удаляем все элементы
+  }
+
+  this[0] = swap; //записываем единственный указанный в аргументе элемент
+
+  this.length = 1;
+  return this;
+}; // 3.метод, который возвращает номер элемента в рамках одного родителя
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.index = function () {
+  const parent = this[0].parentNode; //находим родителя 1го элемента
+
+  const childs = [...parent.children]; //создаём псевдоколлекцию через spread из потомков
+
+  const findChildIndex = item => item === this[0]; //стрелочная, чтобы не потерять this
+
+
+  return childs.findIndex(findChildIndex);
+}; // 4.метод, который возвращает новый объект с найденными элементами по селектору после выполнения eq
+
+/*общая логика: создаём копию объекта this, находим нужные элементы по селектору, 
+переписываем this с новыми элементами по порядку(counter), удаляем неподходящие элементы из остатка this */
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.findElems = function (selector) {
+  let numberOfItems = 0,
+      //общее количество элементов для св-ва length
+  counter = 0; //индекс отфильтрованных по селектору элементов для создания объекта
+
+  const copyObj = Object.assign({}, this); //для избежания багов
+  //записываем удовлетворяющие селектору элементы в elems
+
+  for (let i = 0; i < copyObj.length; i++) {
+    const elems = copyObj[i].querySelectorAll(selector);
+
+    if (elems.length === 0) {
+      continue;
+    } // записывем в объект this элементы elems
+
+
+    for (let j = 0; j < elems.length; j++) {
+      this[counter] = elems[j];
+      counter++;
+    }
+
+    numberOfItems += elems.length;
+  } // остаётся this с новыми от 0 до numberOfItems элементами и "хвостом" старых
+
+
+  this.length = numberOfItems; // удаляем остаток ненужных элементов из объекта this
+
+  const objLength = Object.keys(this).length;
+
+  for (numberOfItems; numberOfItems < objLength; numberOfItems++) {
+    delete this[numberOfItems];
+  }
+
+  return this;
+}; // 5.метод поиска ближайшего родителя для ряда элементов (аналог .closest(), но для множества элементов)
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.closestElems = function (selector) {
+  let counter = 0;
+
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].closest(selector)) {
+      console.log('внимательней будь - нет такого элемента');
+      return this;
+    }
+
+    this[i] = this[i].closest(selector);
+    counter++;
+  }
+
+  const objLength = Object.keys(this).length;
+
+  for (counter; counter < objLength; counter++) {
+    delete this[counter];
+  }
+
+  return this;
+}; // 6.метод поиска соседних элементов без самого элемента
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.siblings = function () {
+  let numberOfItems = 0,
+      counter = 0;
+  const copyObj = Object.assign({}, this);
+
+  for (let i = 0; i < copyObj.length; i++) {
+    const elems = copyObj[i].parentNode.children;
+
+    for (let j = 0; j < elems.length; j++) {
+      if (copyObj[i] === elems[j]) {
+        continue;
+      }
+
+      this[counter] = elems[j];
+      counter++;
+    }
+
+    numberOfItems += elems.length - 1; //минус сам элемент
+  }
+
+  this.length = numberOfItems; // удаляем остаток ненужных элементов из объекта this
+
+  const objLength = Object.keys(this).length;
+
+  for (numberOfItems; numberOfItems < objLength; numberOfItems++) {
+    delete this[numberOfItems];
+  }
+
+  return this;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
 /***/ "./src/js/lib/modules/eventActions.js":
 /*!********************************************!*\
   !*** ./src/js/lib/modules/eventActions.js ***!
@@ -377,9 +539,10 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.click = function (handle
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib */ "./src/js/lib/lib.js");
+ // console.log($('div').eq(2).findElems('.some'));
+// console.log($('.some').closestElems('.parent'));
 
-Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('button').setAttr('value', 'hey');
-console.log(Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('button').getAttr('value'));
+console.log(Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.more').eq(0).siblings());
 
 /***/ })
 
