@@ -5,3 +5,4 @@
 - отображения элементов (display.js);
 - работы с классами (classes.js) и атрибутами элементов (attributes.js);
 - обработчиков событий (eventActions.js) и работы с элементами на странице (elementActions.js);
+- эффектов (fadeIn/fadeOut)
