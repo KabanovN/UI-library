@@ -37,5 +37,3 @@ $.prototype.removeAttr = function(attrName) {
 
     return this;
 };
-
-export default $;

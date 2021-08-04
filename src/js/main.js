@@ -4,7 +4,9 @@ import $ from './lib/lib';
 
 // console.log($('.some').closestElems('.parent'));
 
-console.log($('.more').eq(0).siblings());
+// console.log($('.more').eq(0).siblings());
+
+// $('button').fadeIn(2000);
 
 
 

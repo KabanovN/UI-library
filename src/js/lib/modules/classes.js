@@ -38,5 +38,3 @@ $.prototype.toggleClass = function(className) {
     }
     return this;
 };
-
-export default $;

@@ -5,5 +5,6 @@ import './modules/classes';
 import './modules/eventActions';
 import './modules/attributes';
 import './modules/elementMethods';
+import './modules/effects';
 
 export default $;

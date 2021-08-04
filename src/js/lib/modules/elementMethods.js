@@ -131,5 +131,3 @@ $.prototype.siblings = function() {
 
     return this;
 };
-
-export default $;

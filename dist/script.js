@@ -143,7 +143,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_eventActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/eventActions */ "./src/js/lib/modules/eventActions.js");
 /* harmony import */ var _modules_attributes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/attributes */ "./src/js/lib/modules/attributes.js");
 /* harmony import */ var _modules_elementMethods__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/elementMethods */ "./src/js/lib/modules/elementMethods.js");
+/* harmony import */ var _modules_effects__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/effects */ "./src/js/lib/modules/effects.js");
 // файл для объединения в библиотеку - "обогащение" функции $ методами
+
 
 
 
@@ -158,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************!*\
   !*** ./src/js/lib/modules/attributes.js ***!
   \******************************************/
-/*! exports provided: default */
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -204,15 +206,13 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeAttr = function (a
   return this;
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
 /***/ }),
 
 /***/ "./src/js/lib/modules/classes.js":
 /*!***************************************!*\
   !*** ./src/js/lib/modules/classes.js ***!
   \***************************************/
-/*! exports provided: default */
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -259,8 +259,6 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggleClass = function (
 
   return this;
 };
-
-/* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -319,11 +317,83 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggle = function () {
 
 /***/ }),
 
+/***/ "./src/js/lib/modules/effects.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/effects.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.animateOverTime = function (duration, callback, finalFn) {
+  let timeStart; //стартовое время
+  //ф-я по вычислению времени анимации
+
+  function _animateOverTime(time) {
+    if (!timeStart) {
+      timeStart = time;
+    }
+
+    let timeElapsed = time - timeStart;
+    let complection = Math.min(timeElapsed / duration, 1); //изменение параметров на странице (opacity)
+
+    callback(complection);
+
+    if (timeElapsed < duration) {
+      requestAnimationFrame(_animateOverTime);
+    } else {
+      if (typeof finalFn === 'function') {
+        finalFn();
+      }
+    }
+  }
+
+  return _animateOverTime;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeIn = function (duration, display, finalFn) {
+  for (let i = 0; i < this.length; i++) {
+    this[i].style.display = display || 'block'; //block - по умолчанию
+
+    const _fadeIn = complection => {
+      this[i].style.opacity = complection;
+    };
+
+    const ani = this.animateOverTime(duration, _fadeIn, finalFn);
+    requestAnimationFrame(ani);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeOut = function (duration, finalFn) {
+  for (let i = 0; i < this.length; i++) {
+    const _fadeOut = complection => {
+      this[i].style.opacity = 1 - complection;
+
+      if (complection === 1) {
+        this[i].style.opacity = 'none';
+      }
+    };
+
+    const ani = this.animateOverTime(duration, _fadeOut, finalFn);
+    requestAnimationFrame(ani);
+  }
+
+  return this;
+};
+
+/***/ }),
+
 /***/ "./src/js/lib/modules/elementMethods.js":
 /*!**********************************************!*\
   !*** ./src/js/lib/modules/elementMethods.js ***!
   \**********************************************/
-/*! exports provided: default */
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -475,8 +545,6 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.siblings = function () {
   return this;
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
 /***/ }),
 
 /***/ "./src/js/lib/modules/eventActions.js":
@@ -541,8 +609,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib */ "./src/js/lib/lib.js");
  // console.log($('div').eq(2).findElems('.some'));
 // console.log($('.some').closestElems('.parent'));
-
-console.log(Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.more').eq(0).siblings());
+// console.log($('.more').eq(0).siblings());
+// $('button').fadeIn(2000);
 
 /***/ })
 
