@@ -45,7 +45,7 @@ $.prototype.fadeOut = function(duration, finalFn) {
         const _fadeOut = (complection) => {
             this[i].style.opacity = 1 - complection;
             if (complection === 1) {
-                this[i].style.opacity = 'none';
+                this[i].style.display = 'none';
             }   
         };
 
@@ -53,5 +53,16 @@ $.prototype.fadeOut = function(duration, finalFn) {
         requestAnimationFrame(ani);
     }
 
+    return this;
+};
+
+$.prototype.fadeToggle = function(duration, display, finalFn) {
+    for (let i = 0; i < this.length; i++) {
+        if (window.getComputedStyle(this[i]).display === 'none') {
+            $(this[i]).fadeIn(duration, display, finalFn);
+        } else {
+            $(this[i]).fadeOut(duration, display, finalFn);
+        }
+    }
     return this;
 };
