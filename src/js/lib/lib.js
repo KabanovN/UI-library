@@ -6,5 +6,6 @@ import './modules/eventActions';
 import './modules/attributes';
 import './modules/elementMethods';
 import './modules/effects';
+import './components/dropdown';
 
 export default $;
