@@ -16,8 +16,8 @@ import $ from './lib/lib';
 //     $('div').eq(2).fadeToggle(800);
 // });
 
-// $('button').eq(2).click(() => {
-//     $('.w-500').fadeToggle(800);
+// $('button').eq(1).click(() => {
+//     $('.w-500').fadeIn(800);
 // });
 
 
@@ -39,3 +39,36 @@ import $ from './lib/lib';
 // );
 
 // $('.dropdown__btn').dropdown();
+
+$('#trigger').click(() => $('#trigger').createModal({
+        text: {
+            title: 'Modal title#2',
+            descr: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit..'
+        },
+        btns: {
+            count: 3,
+            settings: [
+                [
+                    'Close modal',
+                    ['btn-danger', 'mr-10'],
+                    true
+                ],
+                [
+                    'Save Changes',
+                    ['btn-success'],
+                    false,
+                    () => {
+                        alert('Data have saved');
+                    }
+                ],
+                [
+                    'Another',
+                    ['btn-warning', 'ml-10'],
+                    false,
+                    () => {
+                        alert('What\'re you waiting?'); 
+                    }   
+                ]
+            ]
+        }
+}));

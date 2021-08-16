@@ -18,19 +18,77 @@
             <button class="btn btn-warning dropdown__btn" id="dropdownMenuBtn">Dropdown menu</button>
             <ul class="dropdown__list" data-toggle-id="dropdownMenuBtn">
                 <li class="dropdown__item">
-                    <a href="" class="dropdown__link">Action</a>
+                    <a href="#" class="dropdown__link">Action</a>
                 </li>
                 <li class="dropdown__item">
-                    <a href="" class="dropdown__link">Action#2</a>
+                    <a href="#" class="dropdown__link">Action#2</a>
                 </li>
                 <li class="dropdown__item">
-                    <a href="" class="dropdown__link">Action#3</a>
+                    <a href="#" class="dropdown__link">Action#3</a>
                 </li>
             </ul>
         </div>
         <!-- /dropdown menu -->
 
         <!-- <div class="wrapper"></div>  -->
+
+        <!-- card -->
+        <div class="goods d-flex f-space-around">
+            <div class="card">
+                <img src="https://cdn.hipwallpaper.com/i/89/26/BMs1eS.jpg" alt="img" class="card__img">
+                <div class="card__wrapper">
+                    <h4 class="card__title">Title</h4>
+                    <p class="card__descr">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+                    <a href="#" class="card__link btn btn-warning" data-toggle="modal" data-target="popup">Link</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://cdn.hipwallpaper.com/i/89/26/BMs1eS.jpg" alt="img" class="card__img">
+                <div class="card__wrapper">
+                    <h4 class="card__title">Title</h4>
+                    <p class="card__descr">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+                    <a href="#" id="trigger" class="card__link btn btn-warning" data-toggle="modal" data-target="popup1">Link</a>
+                </div>
+            </div>
+        </div>
+        <!-- /card -->
+
+        <!-- Modal -->
+        <div class="modal" id="popup">
+            <div class="modal__dialog">
+                <div class="modal__content">
+                    <button class="modal__close" data-close><span>&times;</span></button>
+                    <div class="modal__header">
+                        <h4 class="modal__title">Title</h4>
+                    </div>
+                    <div class="modal__body">
+                        <p class="modal__descr">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deleniti cupiditate porro magnam fuga eos itaque! Suscipit aliquam dicta blanditiis vel rerum consequuntur animi iusto labore, architecto quasi, impedit, aperiam qui.</p>
+                    </div>
+                    <div class="modal__footer">
+                        <button class="btn btn-danger" data-close>Close</button>
+                        <button class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="modal" id="popup1">
+            <div class="modal__dialog">
+                <div class="modal__content">
+                    <button class="modal__close" data-close><span>&times;</span></button>
+                    <div class="modal__header">
+                        <h4 class="modal__title">Title #2</h4>
+                    </div>
+                    <div class="modal__body">
+                        <p class="modal__descr">Lorem ipsum, dolor sit amet consectetur adipisicing elit..</p>
+                    </div>
+                    <div class="modal__footer">
+                        <button class="btn btn-danger" data-close>Close</button>
+                        <button class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- /Modal -->
 
     </div>
     <script src='script.js'></script>

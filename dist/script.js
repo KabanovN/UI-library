@@ -113,6 +113,115 @@ Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.dropdown__btn').dropdown
 
 /***/ }),
 
+/***/ "./src/js/lib/components/modal.js":
+/*!****************************************!*\
+  !*** ./src/js/lib/components/modal.js ***!
+  \****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.modal = function (created) {
+  for (let i = 0; i < this.length; i++) {
+    const target = this[i].getAttribute('data-target'); //реализуем привязку data-target к id модального окна
+
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).click(e => {
+      e.preventDefault();
+      Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(`#${target}`).fadeIn(500);
+      document.body.style.overflow = 'hidden'; //убираем прокрутку основной страницы(body)
+    });
+    const closeElements = document.querySelectorAll(`#${target} [data-close]`); //все триггеры закрытия окна
+
+    closeElements.forEach(elem => {
+      Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(elem).click(() => {
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(`#${target}`).fadeOut(500);
+        document.body.style.overflow = '';
+
+        if (created) {
+          document.querySelector(`#${target}`).remove();
+        }
+      });
+    }); // закрытие при клике на "подложку"
+
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(`#${target}`).click(e => {
+      if (e.target.classList.contains('modal')) {
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(`#${target}`).fadeOut(500);
+        document.body.style.overflow = '';
+
+        if (created) {
+          document.querySelector(`#${target}`).remove();
+        }
+      }
+    });
+  }
+};
+
+Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('[data-toggle="modal"]').modal();
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.createModal = function ({
+  text,
+  btns
+} = {}) {
+  /* форматы аргументов text, btns:
+  text = {title: title, descr: descr}
+  btns = {count: num, settings: [[text, classNames = [], close, callback]]} */
+  for (let i = 0; i < this.length; i++) {
+    //создание модального окна
+    let popup = document.createElement('div');
+    popup.classList.add('modal');
+    popup.setAttribute('id', this[i].getAttribute('data-target'));
+    popup.style.display = 'block'; //добавление кнопок внутри шаблона модального окна в "modal__footer"
+
+    const buttons = [];
+
+    for (let j = 0; j < btns.count; j++) {
+      let btn = document.createElement('button');
+      btn.classList.add('btn', ...btns.settings[j][1]); //св-во classNames у btns
+
+      btn.textContent = btns.settings[j][0]; //св-во text у btns
+      //проверка на функционал закрытия модального окна
+
+      if (btns.settings[j][2]) {
+        btn.setAttribute('data-close', 'true');
+      } // проверка наличия callback-функции в аргументе для обработчика событий
+
+
+      if (btns.settings[j][3] && typeof btns.settings[j][3] === 'function') {
+        btn.addEventListener('click', btns.settings[j][3]);
+      }
+
+      buttons.push(btn);
+    } //шаблон модального окна
+
+
+    popup.innerHTML = `
+            <div class="modal__dialog">
+                <div class="modal__content">
+                    <button class="modal__close" data-close><span>&times;</span></button>
+                    <div class="modal__header">
+                        <h4 class="modal__title">${text.title}</h4>
+                    </div>
+                    <div class="modal__body">
+                        <p class="modal__descr">${text.descr}</p>
+                    </div>
+                    <div class="modal__footer">
+                    </div>
+                </div>
+            </div>
+        `;
+    popup.querySelector('.modal__footer').append(...buttons);
+    document.body.append(popup);
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).modal(true);
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i].getAttribute('data-target')).fadeIn(500);
+  }
+};
+
+/***/ }),
+
 /***/ "./src/js/lib/core.js":
 /*!****************************!*\
   !*** ./src/js/lib/core.js ***!
@@ -172,7 +281,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_elementMethods__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/elementMethods */ "./src/js/lib/modules/elementMethods.js");
 /* harmony import */ var _modules_effects__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/effects */ "./src/js/lib/modules/effects.js");
 /* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/dropdown */ "./src/js/lib/components/dropdown.js");
+/* harmony import */ var _components_modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/modal */ "./src/js/lib/components/modal.js");
 // файл для объединения в библиотеку - "обогащение" функции $ методами
+
 
 
 
@@ -658,8 +769,8 @@ __webpack_require__.r(__webpack_exports__);
 // $('[data-count="second"]').click(() => {
 //     $('div').eq(2).fadeToggle(800);
 // });
-// $('button').eq(2).click(() => {
-//     $('.w-500').fadeToggle(800);
+// $('button').eq(1).click(() => {
+//     $('.w-500').fadeIn(800);
 // });
 // $('.wrapper').html(
 //     `<div class="dropdown">
@@ -678,6 +789,21 @@ __webpack_require__.r(__webpack_exports__);
 //     </div>`
 // );
 // $('.dropdown__btn').dropdown();
+
+Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#trigger').click(() => Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#trigger').createModal({
+  text: {
+    title: 'Modal title#2',
+    descr: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit..'
+  },
+  btns: {
+    count: 3,
+    settings: [['Close modal', ['btn-danger', 'mr-10'], true], ['Save Changes', ['btn-success'], false, () => {
+      alert('Data have saved');
+    }], ['Another', ['btn-warning', 'ml-10'], false, () => {
+      alert('What\'re you waiting?');
+    }]]
+  }
+}));
 
 /***/ })
 
