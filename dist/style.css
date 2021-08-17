@@ -183,6 +183,33 @@
   .modal__footer {
     padding: 15px; }
 
+.tab {
+  max-width: 700px; }
+  .tab__list {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px 4px 0 0; }
+  .tab__item {
+    padding: 10px 20px;
+    line-height: 27px;
+    font-size: 18px;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer; }
+    .tab__item:last-child {
+      border-right: none; }
+    .tab__item-active {
+      background-color: rgba(0, 0, 0, 0.1); }
+  .tab__content {
+    display: none;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: none;
+    border-radius: 0 0 4px 4px; }
+    .tab__content-active {
+      display: block; }
+
 .text-center {
   text-align: center; }
 
