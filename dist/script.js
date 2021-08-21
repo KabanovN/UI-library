@@ -298,9 +298,8 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.slider = function () {
         slideIndex = 0;
       } else {
         slideIndex++;
-      }
+      } //убираем класс активности у всех индикаторов - добавляем для текущего
 
-      console.log(slideIndex); //убираем класс активности у всех индикаторов - добавляем для текущего
 
       dots.forEach(dot => dot.classList.remove('active'));
       dots[slideIndex].classList.add('active');
@@ -322,7 +321,6 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.slider = function () {
         slideIndex--;
       }
 
-      console.log(slideIndex);
       dots.forEach(dot => dot.classList.remove('active'));
       dots[slideIndex].classList.add('active');
     });
@@ -333,14 +331,46 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.slider = function () {
       slideIndex = slideTo;
       offset = +width.replace(/\D/g, '') * slideTo;
       slidesField.style.transform = `translateX(-${offset}px)`;
-      console.log(slideIndex);
       dots.forEach(dot => dot.classList.remove('active'));
       dots[slideIndex].classList.add('active');
     });
   }
 };
 
-Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.carousel').slider();
+Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('#slider').slider();
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.createSlider = function (obj = {}) {
+  // obj = {count: 2, img: [url1, url2]}
+  for (let i = 0; i < this.length; i++) {
+    this[i].innerHTML = `
+            <ol class="carousel__indicators"></ol>
+            <div class="carousel__inner">
+                <div class="carousel__slides"></div>
+
+                <a href="#" class="carousel__prev" data-slide="prev">
+                    <span class="carousel__prev__icon">&lt;</span>
+                </a>
+                <a href="#" class="carousel__next" data-slide="next">
+                    <span class="carousel__next__icon">&gt;</span>
+                </a>
+            </div>
+        `;
+
+    for (let j = 0; j < obj.count; j++) {
+      let item = document.createElement('div');
+      item.classList.add('carousel__item');
+      let image = document.createElement('img');
+      image.src = obj.img[j];
+      item.append(image);
+      this[i].querySelector('.carousel__slides').appendChild(item);
+      let dot = document.createElement('li');
+      dot.setAttribute('data-slide-to', `${j}`);
+      this[i].querySelector('.carousel__indicators').append(dot);
+    }
+
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).slider();
+  }
+};
 
 /***/ }),
 
@@ -438,7 +468,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_tabs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/tabs */ "./src/js/lib/components/tabs.js");
 /* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/accordion */ "./src/js/lib/components/accordion.js");
 /* harmony import */ var _components_slider__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/slider */ "./src/js/lib/components/slider.js");
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./services/requests */ "./src/js/lib/services/requests.js");
 // файл для объединения в библиотеку - "обогащение" функции $ методами
+
 
 
 
@@ -908,6 +940,57 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.click = function (handle
 
 /***/ }),
 
+/***/ "./src/js/lib/services/requests.js":
+/*!*****************************************!*\
+  !*** ./src/js/lib/services/requests.js ***!
+  \*****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.get = async function (url, dataTypeAnswer = 'json') {
+  let res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Could\'t fetch ${url}, status: ${res.status}`);
+  }
+
+  switch (dataTypeAnswer) {
+    case 'json':
+      return await res.json();
+
+    case 'text':
+      return await res.text();
+
+    case 'blob':
+      return await res.blob();
+  }
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.post = async function (url, data, dataTypeAnswer = 'text') {
+  let res = await fetch(url, {
+    method: 'POST',
+    body: data
+  });
+
+  switch (dataTypeAnswer) {
+    case 'json':
+      return await res.json();
+
+    case 'text':
+      return await res.text();
+
+    case 'blob':
+      return await res.blob();
+  }
+};
+
+/***/ }),
+
 /***/ "./src/js/main.js":
 /*!************************!*\
   !*** ./src/js/main.js ***!
@@ -963,6 +1046,10 @@ Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#trigger').click(() =>
     }]]
   }
 }));
+Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#slider1').createSlider({
+  count: 4,
+  img: ['https://il-mostro.com/wp-content/uploads/2012/08/fTO1henYeTg.jpg', 'https://im0-tub-ru.yandex.net/i?id=85aea42f32633e2f6f9765351815ed09-l&ref=rim&n=13&w=1080&h=1350', 'https://pbs.twimg.com/media/CQWAF7xUwAAuK_1.jpg', 'https://i.pinimg.com/originals/b4/b9/64/b4b9649495d7c5c64d9884ffb44575bf.jpg']
+});
 
 /***/ })
 

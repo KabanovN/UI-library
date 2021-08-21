@@ -72,3 +72,12 @@ $('#trigger').click(() => $('#trigger').createModal({
             ]
         }
 }));
+
+$('#slider1').createSlider({
+    count: 4,
+    img: ['https://il-mostro.com/wp-content/uploads/2012/08/fTO1henYeTg.jpg', 
+        'https://im0-tub-ru.yandex.net/i?id=85aea42f32633e2f6f9765351815ed09-l&ref=rim&n=13&w=1080&h=1350',
+        'https://pbs.twimg.com/media/CQWAF7xUwAAuK_1.jpg',
+        'https://i.pinimg.com/originals/b4/b9/64/b4b9649495d7c5c64d9884ffb44575bf.jpg'
+    ]
+});

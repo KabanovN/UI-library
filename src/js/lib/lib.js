@@ -11,5 +11,6 @@ import './components/modal';
 import './components/tabs';
 import './components/accordion';
 import './components/slider';
+import './services/requests';
 
 export default $;

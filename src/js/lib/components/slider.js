@@ -1,6 +1,5 @@
 import $ from '../core';
 
-
 $.prototype.slider = function() {
     for (let i = 0; i < this.length; i++) {
         const width = window.getComputedStyle(this[i].querySelector('.carousel__inner')).width;
@@ -35,7 +34,6 @@ $.prototype.slider = function() {
             } else {
                 slideIndex++;
             }
-            console.log(slideIndex);
             //убираем класс активности у всех индикаторов - добавляем для текущего
             dots.forEach(dot => dot.classList.remove('active'));
             dots[slideIndex].classList.add('active');
@@ -58,7 +56,6 @@ $.prototype.slider = function() {
             } else {
                 slideIndex--;
             }
-            console.log(slideIndex);
             dots.forEach(dot => dot.classList.remove('active'));
             dots[slideIndex].classList.add('active');
         });
@@ -72,11 +69,45 @@ $.prototype.slider = function() {
             
             slidesField.style.transform = `translateX(-${offset}px)`;
 
-            console.log(slideIndex);
             dots.forEach(dot => dot.classList.remove('active'));
             dots[slideIndex].classList.add('active');
         });
     }
 };
 
-$('.carousel').slider();
+$('#slider').slider();
+
+$.prototype.createSlider = function(obj = {}) {
+    // obj = {count: 2, img: [url1, url2]}
+    for (let i = 0; i < this.length; i++) {
+        this[i].innerHTML = `
+            <ol class="carousel__indicators"></ol>
+            <div class="carousel__inner">
+                <div class="carousel__slides"></div>
+
+                <a href="#" class="carousel__prev" data-slide="prev">
+                    <span class="carousel__prev__icon">&lt;</span>
+                </a>
+                <a href="#" class="carousel__next" data-slide="next">
+                    <span class="carousel__next__icon">&gt;</span>
+                </a>
+            </div>
+        `;
+    
+        for (let j = 0; j < obj.count; j++) {
+            let item = document.createElement('div');
+            item.classList.add('carousel__item');
+            let image = document.createElement('img');
+            image.src = obj.img[j];
+            item.append(image);
+            this[i].querySelector('.carousel__slides').appendChild(item);
+
+            let dot = document.createElement('li');
+            dot.setAttribute('data-slide-to', `${j}`);
+            this[i].querySelector('.carousel__indicators').append(dot);
+        }
+
+        $(this[i]).slider();
+    }   
+};
+
